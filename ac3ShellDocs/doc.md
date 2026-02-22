@@ -41,3 +41,8 @@ Now I must:
 1. Allocate memory
 2. Read from stdin
 3. Store it in a character array
+
+
+## Implementation
+It can be found in the root.
+
