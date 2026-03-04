@@ -93,3 +93,69 @@ int main() {
 }
 ```
 ### Explanation
+Here we see how each line makes sense and what they do
+1. Remove newline from input
+```c
+input[strcspn(input, "\n")] = '\0';
+```
+Because `fgets()` stores:
+```sh
+ls\n
+```
+But `execvp()` needs:
+```sh
+ls
+```
+2. Create Child Process
+```c
+pid_t pid = fork()
+```
+Now we have:
+- parent -> shell
+- child -> command runner
+3. Child Executes Program
+```c
+char *argv[] = { input, NULL };
+execvp(argv[0], argv);
+```
+
+Example becomes:
+```sh
+execvp("ls", ["ls", NULL]);
+```
+if exec succeeds:
+- child process becomes `ls`
+if exec fails:
+- prints error and exits
+
+4. Parent Waits
+```c
+waitpid(pid, NULL, 0);
+```
+Shell pauses until command finishes.
+
+## Compile and run
+```sh
+# compile
+gcc main.c -o ac3shell
+# run
+./ac3shell
+```
+
+## Tests for this stage
+The following must work
+```sh
+ls
+pwd
+date
+whoami
+```
+These must NOT work yet:
+```sh
+ls -l
+echo hello
+cd ..
+```
+If you happen to type those then you will get an error coz right now we are jst dealing with single arguments
+
+
