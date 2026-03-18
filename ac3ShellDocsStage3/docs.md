@@ -66,3 +66,44 @@ Therefore:
 | `exit`  | `exit()`      |
 | `pwd`   | `getcwd()`      |
 
+### Where the builts-ins will go in the current flow
+Current Flow
+```sh
+read input
+tokenize
+fork
+exec
+wait
+```
+New flow
+```sh
+read input
+tokenize
+
+if built-in
+    run builtin
+else
+    fork
+    exec
+    wait
+```
+Built-ins  must be checked before fork
+
+## Stage 3 test checklists
+These must work
+```sh
+pwd
+cd ..
+pwd
+cd /
+pwd
+exit
+```
+External commands must still work:
+```sh
+ls
+ls -l
+echo hello
+date
+```
+This is it for stage 3
